@@ -65,6 +65,56 @@
       display:inline-block; padding:4px 10px; border-radius:999px;
       border:1px solid var(--ring); background:#fff; font-size:12px; color:var(--muted)
     }
+
+    /* ======================================================
+       🌸 ESTILOS EXTRA TAREA #4 (Filtros + Tabla de productos)
+       ====================================================== */
+
+    /* Checkbox y chips del formulario */
+    form label input[type="checkbox"] {
+      accent-color: var(--accent);
+      transform: scale(1.2);
+      vertical-align: middle;
+    }
+
+    /* Títulos de filtros */
+    form h3 {
+      margin-bottom: 4px;
+      color: var(--accent);
+      font-size: 16px;
+    }
+
+    /* Botón de aplicar filtros */
+    button[type="submit"] {
+      transition: background 0.3s, transform 0.2s;
+    }
+    button[type="submit"]:hover {
+      background: color-mix(in srgb, var(--accent) 90%, black 5%);
+      transform: scale(1.03);
+    }
+
+    /* Tabla de productos */
+    table {
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 15px;
+    }
+    table th {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    table tr:hover {
+      background: #fff6f7;
+      transition: background 0.2s;
+    }
+    table td {
+      vertical-align: middle;
+    }
+
+    /* Total de productos */
+    p[style*="Total de productos"] strong {
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -97,5 +147,45 @@
   </div>
 </body>
 </html>
+
+{{-- 
+====================================================================
+ EXPLICACIÓN GENERAL DEL LAYOUT (TAREA #3 y TAREA #4)
+====================================================================
+
+Este layout es la base de toda mi aplicación en Laravel.
+Todas las páginas (home, contact, offers, details) usan esta estructura.
+
+ Estructura general
+----------------------------------------------------
+- Cabecera superior fija con el título y subtítulo dinámico (@yield('title'))
+- Menú lateral a la IZQUIERDA con navegación entre las rutas
+- Zona principal (@yield('content')) donde se muestra cada vista
+- Pie de página con mi nombre 
+
+ Diseño visual
+----------------------------------------------------
+- Uso variables CSS con colores suaves (var(--accent), var(--bg), etc.)
+- Estilo moderno con sombras, bordes redondeados y tipografía legible
+- Cada página puede tener su color principal gracias a @yield('accent')
+
+ Añadidos Tarea #4
+----------------------------------------------------
+- Agregué estilos nuevos para la tabla y los filtros de productos
+- Los checkboxes tienen color personalizado y son más visibles
+- El botón “Aplicar filtros” tiene efecto de hover suave
+- La tabla muestra las filas resaltadas al pasar el ratón
+
+ Funcionamiento general
+----------------------------------------------------
+- Este layout se combina con las vistas Blade (home, contact, offers, etc.)
+- Cada vista define su título y su contenido
+- Todo el diseño se mantiene consistente entre páginas
+
+====================================================================
+--}}
+
+
+
 
 

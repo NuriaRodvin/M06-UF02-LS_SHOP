@@ -7,7 +7,7 @@ use App\Http\Controllers\ShopController;
 
 
 // === Rutas del ejercicio (CS02) ===
-Route::get('/',          [PageController::class, 'home']);
+Route::get('/',          [PageController::class, 'home'])->name('home');
 Route::get('/home',      [PageController::class, 'home']);
 Route::get('/details',   [PageController::class, 'details']);
 Route::get('/contact',   [PageController::class, 'contact']);
