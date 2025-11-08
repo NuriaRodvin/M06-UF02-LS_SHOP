@@ -7,31 +7,37 @@ use Illuminate\Http\Request;
 class PageController extends Controller
 {
     /*
-    |--------------------------------------------------------------------------
-    | CONTROLADOR PRINCIPAL DE LA TIENDA
-    |--------------------------------------------------------------------------
-    | Nuria Rodríguez Vindel
-    | Este controlador devuelve el contenido o las vistas de las distintas
-    | páginas del sitio: inicio, detalles, contacto y ofertas.
+    |-------------------------------------------------------------------------- 
+    | CONTROLADOR PRINCIPAL DE LA TIENDA 
+    |-------------------------------------------------------------------------- 
+    | Nuria Rodríguez Vindel 
+    | Este controlador gestiona la visualización de las diferentes páginas 
+    | del sitio web “La Tienda de la Nuri”. Cada método devuelve la vista 
+    | correspondiente usando el motor de plantillas Blade. 
+    |-------------------------------------------------------------------------- 
     */
 
     // Página principal
     public function home() {
-        return "🛍️ Bienvenida a La Tienda de la Nuri — donde cada oferta tiene su encanto ✨";
+        // Devuelve la vista principal con el layout Blade aplicado
+        return view('home');
     }
 
     // Página de detalles
     public function details() {
-        return "📦 Aquí encontrarás los detalles de nuestros productos favoritos 💖";
+        // Muestra información de algunos productos destacados
+        return view('details');
     }
 
     // Página de contacto
     public function contact() {
+        // Carga la vista de contacto con el diseño Blade
         return view('contact');
     }
 
     // Página de ofertas
     public function offers() {
+        // Devuelve la vista con las ofertas y promociones activas
         return view('offers');
     }
 }

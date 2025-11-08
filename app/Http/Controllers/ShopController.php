@@ -17,20 +17,21 @@ class ShopController extends Controller
     /**
      * Muestra la página de contacto (/shop/create)
      */
+
     public function create()
     {
         return view('contact'); // muestra la vista verde de contacto
     }
 
     /**
-     * Guarda algo 
+     * Guarda algo
      */
     public function store(Request $request)
     {
         return "Guardando nuevo producto... (solo demostración)";
     }
 
-    /**
+    /*
      * Muestra la página de detalles (/shop/{id})
      */
     public function show(string $id)
