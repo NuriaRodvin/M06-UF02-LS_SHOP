@@ -33,7 +33,6 @@
         - Mostrar productos reales desde la base de datos (ls_shop)
         - Permitir filtrar por categoría
         - Permitir ordenar por precio
-        Intento que el diseño siga mi estilo anterior, con emojis 
     ======================================================== -->
 
     <div class="card" style="margin-top: 30px;">
@@ -95,6 +94,7 @@
                     <th style="padding: 10px; text-align: left;">🛍️ Nombre</th>
                     <th style="padding: 10px; text-align: left;">📂 Categoría</th>
                     <th style="padding: 10px; text-align: right;">💰 Precio</th>
+                    <th style="padding: 10px; text-align: center;">⚙️ Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,16 +107,40 @@
                         <td style="padding: 8px; text-align: right;">
                             {{ number_format($product->precio, 2, ',', '.') }} €
                         </td>
+                        <td style="padding: 8px; text-align: center;">
+                            {{-- Enlace a detalles pasando también los filtros actuales --}}
+                            <a href="{{ route('details', [
+                                    'id'          => $product->id,
+                                    'categories'  => $selectedCategories,
+                                    'order_price' => $orderPrice ? 1 : 0,
+                                ]) }}"
+                               style="padding:6px 10px; border-radius:999px; border:1px solid var(--accent);
+                                      text-decoration:none; color:var(--accent); font-size:13px;">
+                                Ver detalles ✏️
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 12px;">
+                        <td colspan="4" style="text-align: center; padding: 12px;">
                             No hay productos que coincidan con los filtros 😢
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+
+        <!-- Botón para ir al formulario de nuevo producto (INSERT - Tarea 5) -->
+        <div style="margin-top: 15px;">
+            <a href="{{ route('products.create', [
+                    'categories'  => $selectedCategories,
+                    'order_price' => $orderPrice ? 1 : 0,
+                ]) }}"
+               style="padding:8px 14px; border-radius:999px; background:var(--accent);
+                      color:#fff; text-decoration:none; font-size:14px;">
+                ➕ Añadir nuevo producto
+            </a>
+        </div>
 
         <!-- Mensajito de resumen -->
         <p style="margin-top: 10px; color: var(--muted); font-size: 14px;">
@@ -196,5 +220,12 @@ usando el modelo Product (relacionado con Category).
 - Añado colores suaves, bordes redondeados y tipografía legible
 - Todo sigue el estilo general de mi plantilla Blade base
 
+
+PASO 5: Configuración de la base de datos de archivo .env
+---------------------------------------------------------
+- Modifico para que sea XAMPP y no SQLite
+  (DB_CONNECTION=mysql + DB_DATABASE=ls_shop + DB_USERNAME=root + DB_PASSWORD=  )
+- También he modificado para que el cache sea un archivo y no la base de datos
+  (CACHE_STORE=file  + SESSION_DRIVER=file + QUEUE_CONNECTION=sync)
 ====================================================================
 --}}

@@ -67,7 +67,7 @@
     }
 
     /* ======================================================
-       🌸 ESTILOS EXTRA TAREA #4 (Filtros + Tabla de productos)
+       ESTILOS EXTRA TAREA #4 (Filtros + Tabla de productos)
        ====================================================== */
 
     /* Checkbox y chips del formulario */
@@ -130,7 +130,12 @@
         <div class="brand" style="font-size:18px;margin-bottom:8px">Menú</div>
         <nav class="nav">
           <a href="/home"    class="{{ request()->is('home')    ? 'active':'' }}">🏠 Inicio</a>
-          <a href="/details" class="{{ request()->is('details') ? 'active':'' }}">📦 Detalles</a>
+          <a href="{{ route('details.section') }}"   class="{{ request()->is('details') ? 'active':'' }}">    📦 Detalles</a> 
+
+          {{-- ====== Corregido la ruta de details porque se esperaba un id: 
+     El menú lleva a /details → vista details_index.blade.php.
+     El botón “Ver detalles” de /home apunta a /details/{id} con CRUD. ====== --}}
+
           <a href="/contact" class="{{ request()->is('contact') ? 'active':'' }}">📞 Contacto</a>
           <a href="/offers"  class="{{ request()->is('offers')  ? 'active':'' }}">🔥 Ofertas</a>
         </nav>
