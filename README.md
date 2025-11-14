@@ -1,59 +1,184 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+🛍️ LS_SHOP – La Tienda de la Nuri
+CRUD + Catálogo De Productos + Carrito con Sesión
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Autora: Nuria Rodríguez Vindel
+Módulo: ICB0006 — UF2 — PR01
 
-## About Laravel
+✨ Descripción general
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+LS_SHOP es una tienda online, desarrollada con Laravel + MySQL.
+Permite:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+👀 Ver productos en tabla o catálogo visual
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+🔎 Buscar productos
 
-## Learning Laravel
+📂 Filtrar por categorías
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+💶 Ordenar por precio
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+📝 Ver y editar cada producto (CRUD)
 
-## Laravel Sponsors
+➕ Insertar nuevos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+🗑️ Eliminarlos
 
-### Premium Partners
+🛒 Añadir productos al carrito (con sesión)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+📦 Ver el carrito en cualquier momento
 
-## Contributing
+Incluye un diseño totalmente personalizado con tarjetas, sombras, hover, emojis y estilo suave.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+🌈 Tecnologías utilizadas
+Tecnología	Uso
+Laravel	Backend + rutas + controladores
+Blade Templates	Vistas y layout
+MySQL (XAMPP)	Base de datos de productos
+PHP 8+	Lógica del servidor
+CSS personalizado	Catálogo estilo Amazon
+Laravel Sessions	Carrito persistente
+📁 Estructura del proyecto
+/app
+  /Http/Controllers
+      PageController.php
+      CartController.php
+      Controller.php
 
-## Code of Conduct
+/resources/views
+  layouts/app.blade.php     # Layout principal
+  home.blade.php            # Página principal
+  products/index.blade.php  # Catálogo tipo Amazon
+  details.blade.php         # CRUD detallado
+  details_index.blade.php   # Portada de detalles
+  cart.blade.php            # Carrito
+  contact.blade.php
+  offers.blade.php
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+/routes/web.php             # Rutas del proyecto
+/database                   # Migraciones, modelos
 
-## Security Vulnerabilities
+🧱 Base de datos
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Tablas principales:
 
-## License
+products
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+categories
+
+Incluyen datos como:
+
+id, nombre, category_id, precio,
+descripcion, sku, stock, activo, imagen
+
+
+🔽 Se entrega el fichero SQL
+ls_shop_nuriarodriguez.sql
+
+🧭 Rutas principales
+Ruta	Descripción
+/ o /home	Página principal con bienvenida
+/products	Catálogo visual
+/details	Portada general de detalles
+/details/{id}	Ficha editable del producto
+/products/create	Insertar producto nuevo
+/cart	Ver carrito
+/contact	Página de contacto
+/offers	Página de ofertas
+🛠️ CRUD implementado
+✔️ CREATE
+
+Formulario de alta en /products/create.
+
+✔️ READ
+
+Tabla en /home
+
+Catálogo visual con tarjetas /products
+
+Detalles en /details/{id}
+
+✔️ UPDATE
+
+Editar campos del producto en /details/{id}.
+
+✔️ DELETE
+
+Borrar un producto desde /details/{id}.
+
+🛒 Carrito (con sesión)
+
+Ruta: /cart
+Controlador: CartController
+
+El carrito almacena:
+
+[
+  product_id => [
+    'id' => ...,
+    'name' => ...,
+    'price' => ...,
+    'qty' => ...,
+    'category' => ...
+  ],
+]
+
+
+Funciones:
+
+add() → añadir al carrito
+
+remove() → eliminar 1 producto
+
+clear() → vaciar carrito
+
+index() → mostrar carrito
+
+Icono del carrito disponible en la cabecera.
+
+🎨 Originalidad añadida por la autora
+
+⭐ Estilo visual totalmente personalizado
+
+🟧 Catálogo de productos con hover + sombras
+
+📦 Icono de caja cuando no hay imagen
+
+✨ Textos con emojis y estilo cálido
+
+🧭 Menú lateral + menú superior
+
+💥 Promo de la semana
+
+🛒 Carrito siempre accesible
+
+📄 Comentarios detallados para estudiar
+
+
+
+🚀 Instalación y uso
+1️⃣ Clonar repositorio
+git clone https://github.com/NuriaRodvin/M06-UF02-LS_SHOP.git
+
+2️⃣ Instalar dependencias
+composer install
+npm install
+
+3️⃣ Configurar .env
+
+Copia .env.example → .env
+
+Configura:
+
+DB_DATABASE=ls_shop
+DB_USERNAME=root
+DB_PASSWORD=
+
+4️⃣ Generar APP_KEY
+php artisan key:generate
+
+5️⃣ Importar SQL
+
+Importa ls_shop_nuriarodriguez.sql en phpMyAdmin.
+
+6️⃣ Iniciar servidor
+php artisan serve
