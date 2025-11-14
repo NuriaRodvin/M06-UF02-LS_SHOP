@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
-
+use App\Http\Controllers\CartController;
 
 /*
 // === Rutas del ejercicio (CS02) ===
@@ -14,7 +14,6 @@ Route::get('/contact',   [PageController::class, 'contact']);
 Route::get('/offers',    [PageController::class, 'offers']);
 */
 
-
 // Ruta principal
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/home', [PageController::class, 'home'])->name('home');
@@ -23,26 +22,16 @@ Route::get('/home', [PageController::class, 'home'])->name('home');
 |----------------------------------------------
 | SECCIÓN GENERAL DE DETALLES (SIN ID)
 |----------------------------------------------
-| Esta ruta se usa cuando pulso en el menú lateral
-| "Detalles". No necesito ningún id, solo quiero
-| mostrar la página bonita de presentación.
-|
-| Usa el método detailsSection() del PageController
-| y la vista resources/views/details_index.blade.php
+| /details -> página de “presentación” de la sección
+| (vista details_index.blade.php)
 */
-Route::get('/details', [PageController::class, 'detailsSection'])
-    ->name('details.section');
+Route::get('/details', [PageController::class, 'detailsSection'])->name('details.section');
 
 /*
 |----------------------------------------------
 | DETALLES DE UN PRODUCTO (CRUD en /details/{id})
 |----------------------------------------------
-| Ahora la ruta de detalles recibe un {id}
-| para saber qué producto mostrar/editar.
-|
-| OJO: esta ruta va DESPUÉS de /details, porque
-| si no, Laravel intentaría interpretar /details
-| como si le faltara el id.
+| Esta ruta usa el id para saber qué producto mostrar/editar.
 */
 Route::get('/details/{id}', [PageController::class, 'details'])->name('details');
 
@@ -59,18 +48,30 @@ Route::delete('/details/{id}', [PageController::class, 'deleteProduct'])->name('
 
 /*
 |----------------------------------------------
+| CATÁLOGO DE PRODUCTOS “MODO AMAZON”
+|----------------------------------------------
+| /products -> grid con tarjetas, filtros y paginación.
+*/
+Route::get('/products', [PageController::class, 'productsCatalog'])->name('products.catalog');
+
+/*
+|----------------------------------------------
 | FORMULARIO DE INSERCIÓN (INSERT)
 |----------------------------------------------
-| He decidido poner el formulario en una
-| ruta propia /products/create porque es
-| lo que suele hacerse en Laravel, creo.
+| /products/create -> formulario de alta
 */
 Route::get('/products/create', [PageController::class, 'createProduct'])->name('products.create');
-Route::post('/products', [PageController::class, 'storeProduct'])->name('products.store');
+Route::post('/products',        [PageController::class, 'storeProduct'])->name('products.store');
 
-// Rutas de contacto y ofertas
+// Rutas de contacto y ofertas (como ya tenías antes de hacer esta tarea 5)
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/offers', [PageController::class, 'offers'])->name('offers');
+Route::get('/offers',  [PageController::class, 'offers'])->name('offers');
 
 // === EXTRA 0,25 ptos: resource sin interferir con lo anterior ===
 Route::resource('/shop', ShopController::class);
+
+// --- Carrito (todas con CartController) ---
+Route::get('/cart',                    [CartController::class, 'index'])->name('cart');
+Route::post('/cart/add/{product}',     [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove/{product}',  [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/clear',             [CartController::class, 'clear'])->name('cart.clear');

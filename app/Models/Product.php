@@ -13,7 +13,6 @@ class Product extends Model
     |--------------------------------------------------------------------------
     | MODELO PRODUCT
     |--------------------------------------------------------------------------
-    | Nuria Rodríguez Vindel
     | Representa la tabla "products" de mi base de datos ls_shop.
     | Desde aquí podré recuperar los productos y relacionarlos con su categoría.
     */

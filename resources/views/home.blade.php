@@ -28,6 +28,93 @@
 
     <p>Explora el menú lateral para descubrir más. ¡Bienvenida a tu nueva tienda favorita! 🌸</p>
 
+
+    <!-- =======================================================
+        BLOQUE NUEVO: ENLACE AL CATÁLOGO “TIPO AMAZON”
+        - Esta parte hace de puente entre la portada y /products
+        - /products es mi competencia de Amazon con tarjetas, filtros,
+          buscador y paginación (se ve más “real tienda online”).
+        - Aquí NO hago CRUD, solo mando a la otra vista.
+    ======================================================== -->
+    <div class="card" style="margin-top: 24px;">
+        <h2>🛒 Explora el catálogo completo</h2>
+        <p>
+            Si quieres ver todos los productos con fotos, precio grande y botones
+            , puedes entrar al catálogo completo.
+        </p>
+
+        {{-- Mini-grid de categorías que llevan a /products con filtros --}}
+<!-- ================================
+     MINI-GRID DE CATEGORÍAS CON HOVER Y RECUADRO
+     --------------------------------
+     Recupera el formato original tipo Amazon:
+     - Tarjetas horizontales con borde y sombra
+     - Hover suave con borde de color principal
+================================ -->
+<div class="grid"
+     style="margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;">
+
+    @foreach($categories as $category)
+        <div class="card"
+             style="border-radius:16px;
+                    padding:18px;
+                    background:#fff;
+                    border:1px solid var(--ring);
+                    box-shadow:0 3px 10px #00000010;
+                    transition: all 0.25s ease;
+                    cursor:pointer;"
+             onmouseover="this.style.borderColor='var(--accent)'; this.style.boxShadow='0 6px 16px #00000025';"
+             onmouseout="this.style.borderColor='var(--ring)'; this.style.boxShadow='0 3px 10px #00000010';">
+
+            <h3 style="margin-top:0; color:var(--accent); font-size:18px;">
+                🛍️ {{ $category->nombre }}
+            </h3>
+
+            <p style="font-size:14px; color:var(--muted); margin-bottom:10px;">
+                Ver solo los productos de <strong>{{ $category->nombre }}</strong> 
+                en modo catálogo tipo Amazon.
+            </p>
+
+            <a href="{{ route('products.catalog', ['category_id' => $category->id]) }}"
+               style="display:inline-block; margin-top:auto; padding:8px 14px;
+                      border-radius:999px; background:var(--accent); color:#fff;
+                      text-decoration:none; font-size:13px; transition:all .2s ease;"
+               onmouseover="this.style.background='color-mix(in srgb, var(--accent) 85%, white)';"
+               onmouseout="this.style.background='var(--accent)';">
+                Ver {{ $category->nombre }} ➜
+            </a>
+        </div>
+    @endforeach
+</div>
+
+
+        {{-- Botón grande para ver TODO el catálogo --}}
+        <div style="margin-top: 14px;">
+            <a href="{{ route('products.catalog') }}"
+               style="padding:8px 16px; border-radius:999px; background:var(--accent);
+                      color:#fff; text-decoration:none; font-weight:600;">
+                Ver todos los productos 🚀
+            </a>
+        </div>
+    </div>
+
+
+
+    {{-- *****************************************************************
+       A PARTIR DE AQUÍ TENGO LA VERSIÓN “CLÁSICA” DE LA TAREA #4
+       --------------------------------------------------------------
+       - Es la tabla con filtros y ordenación en la propia página home.
+       - Ahora mismo quiero que la portada sea más sencilla y que el
+         catálogo “potente” viva en /products.
+       - Como NO quiero perder el código (para mis apuntes), 
+       simplemente lo desactivo visualmente con
+         @if(false) ... @endif. Así Laravel no lo pinta, pero yo sigo
+         teniendo todo el trabajo hecho en este archivo.
+       ***************************************************************** --}}
+    @if(false)
     <!-- =======================================================
         A PARTIR DE AQUÍ EMPIEZA LA PARTE DE LA TAREA #4
         - Mostrar productos reales desde la base de datos (ls_shop)
@@ -130,7 +217,7 @@
             </tbody>
         </table>
 
-        <!-- Botón para ir al formulario de nuevo producto (INSERT - Tarea 5) -->
+        <!-- Botón para ir al formulario de nuevo producto -->
         <div style="margin-top: 15px;">
             <a href="{{ route('products.create', [
                     'categories'  => $selectedCategories,
@@ -149,7 +236,10 @@
     </div>
 
     <!-- Fin de la parte nueva -->
+    @endif
 @endsection
+
+
 
 
 {{-- 
@@ -181,7 +271,14 @@ usando el modelo `Product` y su relación con `Category`.
 - Usa `@section('title')` para cambiar el título dinámicamente.
 - Usa `@section('accent')` para adaptar los colores del tema
   (el layout lo recoge con @yield('accent')).
- 
+
+ Nota como alumna novata 
+----------------------------------------------------
+- Ahora la tabla de la Tarea #4 está dentro de un @if(false),
+  porque el catálogo principal lo hago en /products con tarjetas.
+- Así no “ensucio” la portada, pero sigo teniendo mi código de la
+  práctica guardado y funcionando si algún día quito el @if(false).
+
 ====================================================================
 --}}
 
@@ -227,5 +324,14 @@ PASO 5: Configuración de la base de datos de archivo .env
   (DB_CONNECTION=mysql + DB_DATABASE=ls_shop + DB_USERNAME=root + DB_PASSWORD=  )
 - También he modificado para que el cache sea un archivo y no la base de datos
   (CACHE_STORE=file  + SESSION_DRIVER=file + QUEUE_CONNECTION=sync)
+
+ Nota extra como apuntes:
+---------------------------------------------------------
+- Aunque ahora el catálogo bonito vive en /products, esta página
+  me sirve como “laboratorio” para entender filtros, orderBy,
+  relaciones Eloquent y formularios GET en Laravel.
+- Me dejo todos estos comentarios porque todavía soy novata
+  y así, cuando repase para el examen, entenderé qué hice 
+
 ====================================================================
---}}
+--}} 

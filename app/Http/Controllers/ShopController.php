@@ -44,7 +44,7 @@ class ShopController extends Controller
      */
     public function edit(string $id)
     {
-        return view('offers'); // muestra la vista rosa de ofertas
+        return view('offers'); // muestra la vista de ofertas
     }
 
     /**

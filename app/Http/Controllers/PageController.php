@@ -8,24 +8,7 @@ use App\Models\Category;  // <- Modelo de categorías
 
 class PageController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | CONTROLADOR PRINCIPAL DE LA TIENDA
-    |--------------------------------------------------------------------------
-    | Nuria Rodríguez Vindel
-    | Este controlador devuelve el contenido o las vistas de las distintas
-    | páginas del sitio: inicio, detalles, contacto y ofertas.
-    |
-    | En la Tarea #4, la página más importante es "home", porque ahí
-    | tengo que mostrar la tabla con los productos de la base de datos,
-    | con filtros por categoría y una opción de ordenación por precio.
-    |
-    | En la Tarea #5 añado el CRUD:
-    |   - Insert   (crear nuevos productos)
-    |   - Update   (editar productos desde /details)
-    |   - Delete   (borrar productos desde /details)
-    |   - Envío de filtros entre vistas (home <-> details)
-    */
+
 
     // =======================
     // PÁGINA PRINCIPAL (HOME)
@@ -34,7 +17,7 @@ class PageController extends Controller
     {
         /*
         |------------------------------------------------------------------
-        | 1) Recupero todas las categorías desde la BD
+        | 1. Recupero todas las categorías desde la BD
         |------------------------------------------------------------------
         | Las necesito para pintar los checkboxes de filtrado.
         | Las ordeno por nombre para que se vean bonitas en el menú.
@@ -43,7 +26,7 @@ class PageController extends Controller
 
         /*
         |------------------------------------------------------------------
-        | 2) Leo los filtros que vienen del formulario (GET)
+        | 2. Leo los filtros que vienen del formulario (GET)
         |------------------------------------------------------------------
         | - categories[]  -> array de IDs de categorías marcadas
         | - order_price   -> checkbox para decidir si ordeno por precio
@@ -56,7 +39,7 @@ class PageController extends Controller
 
         /*
         |------------------------------------------------------------------
-        | 3) Construyo la consulta base de productos
+        | 3. Construyo la consulta base de productos
         |------------------------------------------------------------------
         | Importante: uso ->with('category') para que Eloquent cargue
         | también la categoría de cada producto (relación belongsTo).
@@ -65,7 +48,7 @@ class PageController extends Controller
 
         /*
         |------------------------------------------------------------------
-        | 4) Aplico filtro por categoría (si el usuario ha marcado algo)
+        | 4. Aplico filtro por categoría (si el usuario ha marcado algo)
         |------------------------------------------------------------------
         | Si el array está vacío, significa "todas las categorías",
         | así que en ese caso NO añado ningún whereIn.
@@ -76,7 +59,7 @@ class PageController extends Controller
 
         /*
         |------------------------------------------------------------------
-        | 5) Aplico ordenación por precio (si el checkbox está marcado)
+        | 5. Aplico ordenación por precio (si el checkbox está marcado)
         |------------------------------------------------------------------
         | Ordeno de menor a mayor precio cuando el usuario lo pide.
         */
@@ -86,14 +69,14 @@ class PageController extends Controller
 
         /*
         |------------------------------------------------------------------
-        | 6) Ejecuto la consulta y obtengo la colección de productos
+        | 6. Ejecuto la consulta y obtengo la colección de productos
         |------------------------------------------------------------------
         */
         $products = $query->get();
 
         /*
         |------------------------------------------------------------------
-        | 7) Devuelvo la vista "home" pasándole los datos
+        | 7. Devuelvo la vista "home" pasándole los datos
         |------------------------------------------------------------------
         */
         return view('home', [
@@ -116,7 +99,7 @@ class PageController extends Controller
         |
         | La idea es tener una página bonita de presentación con
         | algunos productos destacados y un texto explicando que
-        | el detalle completo se ve en /home -> "Ver detalles ✏️".
+        | el detalle completo se ve en /home -> "Ver detalles".
         |
         | La vista se llama "details_index.blade.php".
         */
@@ -298,47 +281,204 @@ class PageController extends Controller
     {
         return view('offers');
     }
+
+    // ===============================================
+    // CATÁLOGO DE PRODUCTOS (MODO AMAZON, cambiado después)
+    // ===============================================
+    public function productsCatalog(Request $request)
+    {
+        /*
+        |------------------------------------------------------------------
+        | Esta página /products es mi "competencia de Amazon" 
+        | Aquí muestro los productos en formato tarjeta, con:
+        |   - Buscador por nombre (q)
+        |   - Filtro por categoría (category_id)
+        |   - Ordenación por precio (order_price)
+        |
+        | Importante: aquí NO hago CRUD directamente;
+        |             el CRUD completo sigue en /details/{id}
+        |             y el INSERT en /products/create.
+        */
+
+        // 1. Cargo todas las categorías para el filtro del <select>
+        $categories = Category::orderBy('nombre')->get();
+
+        // 2. Leo parámetros de la URL (GET)
+        $search     = $request->input('q', '');             // texto que escribe la persona
+        $categoryId = $request->input('category_id');       // puede venir null
+        $orderPrice = $request->boolean('order_price');     // true/false
+
+        // 3. Construyo la consulta base
+        $query = Product::with('category');
+
+        // 4. Filtro por nombre si han escrito algo en el buscador
+        if ($search !== '') {
+            $query->where('nombre', 'like', '%' . $search . '%');
+        }
+
+        // 5. Filtro por categoría si han elegido alguna en el select
+        if (!empty($categoryId)) {
+            $query->where('category_id', $categoryId);
+        }
+
+        // 6. Ordenación por precio (de menor a mayor) si han marcado el checkbox
+        if ($orderPrice) {
+            $query->orderBy('precio', 'asc');
+        }
+
+        // 7. Ejecuto la consulta con paginación (tipo Amazon: por páginas)
+        $products = $query->paginate(9)->withQueryString();
+        // withQueryString() hace que la paginación mantenga los filtros en la URL
+
+        // 8. Devuelvo la vista del catálogo
+        return view('products.index', [
+            'categories'  => $categories,
+            'products'    => $products,
+            'search'      => $search,
+            'categoryId'  => (int) $categoryId,
+            'orderPrice'  => $orderPrice,
+        ]);
+    }
+
+    // ===================
+    // PÁGINA DEL CARRITO
+    // ===================
+    public function cart()
+    {
+        /*
+        |--------------------------------------------------------------
+        | Carrito (demo visual)
+        |--------------------------------------------------------------
+        | De momento es una página informativa (sin lógica de compra).
+        | Más adelante puedo guardar artículos en sesión y mostrar
+        | cantidades, total, etc. Por ahora solo muestro la vista.
+        */
+        return view('cart');
+    }
 }
 
 /*
-====================================================================
- EXPLICACIÓN GENERAL DEL CONTROLADOR (PageController)
-====================================================================
+===========================================================
+ APUNTES / DOCUMENTACIÓN DE PageController
+===========================================================
 
-Este controlador gestiona las páginas principales de mi aplicación
-Laravel (home, details, contact, offers).
+Este controlador gestiona TODAS las páginas principales de la tienda.
 
- Estructura básica
-----------------------------------------------------
-- Cada método representa una ruta o página del sitio.
-- `home()` carga la vista principal donde se mostrarán los productos.
-- `detailsSection()` es la portada general de la sección Detalles.
-- `details()` muestra los detalles de un producto (CRUD Update/Delete).
-- `contact()` y `offers()` devuelven vistas Blade simples con texto.
-- `createProduct()` y `storeProduct()` me permiten hacer el INSERT.
+────────────────────────────────────────────
+1. Página principal (home)
+────────────────────────────────────────────
+Método: home()
 
- Ampliación en la Tarea #4
-----------------------------------------------------
-- El método `home()` recupera los productos desde la base de datos
-  usando el modelo `Product`.
-- Se añaden filtros por categoría y una opción para ordenar por precio.
-- Los datos se envían a la vista `home.blade.php` con arrays asociativos.
+Funciones:
+- Carga todas las categorías.
+- Lee filtros enviados por GET:
+    categories[] = categorías marcadas
+    order_price  = orden ascendente por precio
+- Construye una consulta Eloquent con:
+    ->with('category')   (carga relación)
+    ->whereIn()          (filtro por categorías)
+    ->orderBy()          (si hay ordenación)
+- Devuelve la vista home.blade.php con todos los datos.
 
- Ampliación en la Tarea #5 (CRUD)
-----------------------------------------------------
-- `detailsSection()` sirve para que el menú "Detalles" tenga su propia
-  página informativa, sin depender de ningún id.
-- `details()` recibe el id del producto desde /home.
-- `updateProduct()` actualiza cualquier campo del producto.
-- `deleteProduct()` permite eliminar el producto por completo.
-- `createProduct()` y `storeProduct()` permiten insertar uno nuevo.
-- Mantengo los filtros entre vistas para que la experiencia sea mejor.
+Usado en Tarea 4.
 
- Buenas prácticas usadas
-----------------------------------------------------
-- Separé la lógica de negocio en el controlador y la vista en Blade.
-- Usé validación con `$request->validate()` para controlar errores.
-- Mantengo mis comentarios y emojis para entender mejor el código :)
+────────────────────────────────────────────
+2. detailsSection()
+────────────────────────────────────────────
+Página /details sin id.
+Sirve como portada decorativa con tarjetas fijas.
 
-====================================================================
-*/
+────────────────────────────────────────────
+3. details($id)
+────────────────────────────────────────────
+Muestra la ficha de un producto concreto.
+
+Pasos:
+- Recupera el producto con category.
+- Recupera categorías para el <select>.
+- Mantiene filtros previos para volver atrás.
+
+Usado en Tarea 5 (CRUD Update/Delete).
+
+────────────────────────────────────────────
+4. updateProduct()
+────────────────────────────────────────────
+Actualiza un producto ya existente:
+- Valida datos.
+- Busca el producto.
+- fill() + save().
+- Redirige de vuelta manteniendo filtros.
+
+────────────────────────────────────────────
+5. deleteProduct()
+────────────────────────────────────────────
+Elimina un producto de la base de datos.
+Redirige a home con filtros y mensaje.
+
+────────────────────────────────────────────
+6. createProduct()
+────────────────────────────────────────────
+Carga formulario para crear un nuevo producto.
+
+────────────────────────────────────────────
+7. storeProduct()
+────────────────────────────────────────────
+Guarda un nuevo producto en la BD.
+Valida, inserta y redirige.
+
+────────────────────────────────────────────
+8. contact() / offers()
+────────────────────────────────────────────
+Vistas estáticas.
+
+────────────────────────────────────────────
+9. productsCatalog()
+────────────────────────────────────────────
+Catálogo visual tipo Amazon:
+- Buscador (q)
+- Filtro por categoría
+- Orden por precio
+- Paginación (9 por página)
+- Mantiene parámetros con withQueryString()
+
+Vista: products/index.blade.php
+
+────────────────────────────────────────────
+10. cart()
+────────────────────────────────────────────
+Versión inicial de carrito (ahora reemplazado por CartController).
+Se deja como referencia de la práctica original.
+
+────────────────────────────────────────────
+ Resumen rápido
+────────────────────────────────────────────
+home()              → filtros + tabla
+detailsSection()    → portada detalles
+details()           → ficha editable
+updateProduct()     → actualizar
+deleteProduct()     → borrar
+createProduct()     → formulario nuevo
+storeProduct()      → insertar
+productsCatalog()   → catálogo tarjetas
+contact(), offers() → simples
+cart()              → demo antigua
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CONTROLADOR PRINCIPAL DE LA TIENDA
+    |--------------------------------------------------------------------------
+    | Este controlador devuelve el contenido o las vistas de las distintas
+    | páginas del sitio: inicio, detalles, contacto y ofertas.
+    |
+    | En la Tarea #4, la página más importante es "home", porque ahí
+    | tengo que mostrar la tabla con los productos de la base de datos,
+    | con filtros por categoría y una opción de ordenación por precio.
+    |
+    | En la Tarea #5 añado el CRUD:
+    |   - Insert   (crear nuevos productos)
+    |   - Update   (editar productos desde /details)
+    |   - Delete   (borrar productos desde /details)
+    |   - Envío de filtros entre vistas (home <-> details)
+    */

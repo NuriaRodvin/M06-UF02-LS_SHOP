@@ -20,8 +20,7 @@
     <!-- =======================================================
         CABECERA DE LA PÁGINA
         Aquí simplemente doy la bienvenida al formulario de
-        creación de productos. Mantengo mi estilo con emojis
-        y textos simpáticos para que no sea tan serio 😅.
+        creación de productos.
     ======================================================== -->
     <h1>➕ Crear nuevo producto</h1>
     <p>
@@ -258,7 +257,7 @@
 @endsection
 
 
-{{-- 
+{{--
 ====================================================================
  EXPLICACIÓN/RESUMEN DE ESTA VISTA (create.blade.php)
 ====================================================================
@@ -288,10 +287,9 @@
   para que al volver pueda reconstruir el mismo estado.
 
 Con todo esto, cumplo la parte de:
-  ✔ Funcionalidad "Insert"
-  ✔ Control de errores básico
-  ✔ Envío de información entre vistas (filtros)
+Funcionalidad "Insert"
+Control de errores básico
+Envío de información entre vistas (filtros)
 
 ====================================================================
---}} 
-
+--}}

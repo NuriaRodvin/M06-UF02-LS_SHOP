@@ -13,7 +13,6 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | MODELO CATEGORY
     |--------------------------------------------------------------------------
-    | Nuria Rodríguez Vindel
     | Representa la tabla "categories" donde tengo Informatica, Ropa, etc.
     */
 
