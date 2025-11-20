@@ -273,3 +273,91 @@ Rutas y controladores de Laravel.
 Blade y diseño propio.
 
 Carrito con sesiones.
+
+
+🛒 Funciones del controlador del carrito (CartController)
+
+index() → Muestra el carrito, lista los productos añadidos y calcula el total (€).
+
+add() → Añade un producto al carrito o incrementa la cantidad si ya existía.
+
+remove() → Elimina una línea completa del carrito (no resta cantidades).
+
+clear() → Vacía el carrito entero borrando la sesión.
+
+⭐ Extra 0,25 ptos – Resource sin interferir con lo anterior
+
+En routes/web.php se ha añadido un resource completo para ShopController, sin afectar al funcionamiento de la tienda:
+
+// === EXTRA 0,25 ptos: Resource sin interferir con lo anterior ===
+// Este resource crea automáticamente TODAS las rutas de un CRUD completo.
+// Laravel generará:
+//   - GET    /shop             → index()
+//   - GET    /shop/create      → create()
+//   - POST   /shop             → store()
+//   - GET    /shop/{id}        → show()
+//   - GET    /shop/{id}/edit   → edit()
+//   - PUT    /shop/{id}        → update()
+//   - DELETE /shop/{id}        → destroy()
+//
+// Yo no uso estas rutas en la tienda principal (home, products, carrito, etc.),
+// pero las añado para demostrar que conozco cómo funciona un
+// controlador REST completo en Laravel.
+Route::resource('/shop', ShopController::class);
+
+
+Estas rutas extra no interfieren con las rutas reales de la tienda y sirven como ampliación opcional de la práctica (0,25 pts extra).
+
+🚀 Instalación y ejecución del proyecto
+1️⃣ Clonar el repositorio
+git clone https://github.com/NuriaRodvin/M06-UF02-LS_SHOP.git
+cd M06-UF02-LS_SHOP
+
+2️⃣ Instalar dependencias PHP
+composer install
+
+3️⃣ Instalar dependencias de frontend (si se usan)
+npm install
+
+4️⃣ Crear y configurar el archivo .env
+
+Copia .env.example y configúralo así:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ls_shop
+DB_USERNAME=root
+DB_PASSWORD=
+
+5️⃣ Generar la APP_KEY de Laravel
+php artisan key:generate
+
+6️⃣ Importar la base de datos
+
+En phpMyAdmin, importa el archivo:
+
+database/sql/ls_shop_nuriarodriguez.sql
+
+7️⃣ Arrancar el servidor
+php artisan serve
+
+8️⃣ Abrir en el navegador
+
+👉 http://127.0.0.1:8000
+
+📝 Notas finales
+
+Todo el proyecto contiene comentarios muy detallados, pensados para estudiar y entender Laravel paso a paso.
+
+Combina:
+
+✔️ Base de datos real MySQL
+
+✔️ Modelo–Vista–Controlador
+
+✔️ Blade y diseño personalizado
+
+✔️ Carrito persistente con sesiones
+
+✔️ CRUD completo profesional
