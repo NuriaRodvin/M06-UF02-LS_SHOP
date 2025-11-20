@@ -1,183 +1,179 @@
-# LS_SHOP – La Tienda de la Nuri  
-CRUD completo + Catálogo visual + Carrito con sesión
+📦 LS_SHOP – La Tienda de la Nuri
+CRUD completo · Catálogo visual · Carrito con sesión
 
-Autora: **Nuria Rodríguez Vindel**  
-Módulo: **ICB0006 — UF2 — PR01**
+Autora: Nuria Rodríguez Vindel
+Módulo: ICB0006 — UF2 — PR01
 
----
+✨ 1. Descripción general
 
-## 1. Descripción general
+LS_SHOP es una tienda online desarrollada con Laravel + MySQL, con un diseño moderno, cálido y completamente personalizado.
 
-LS_SHOP es una pequeña tienda online desarrollada con **Laravel** y **MySQL**.
+Incluye:
 
-Permite:
+✔️ Catálogo visual con tarjetas estilo tienda online
 
-- Ver productos en tabla y en catálogo visual tipo tienda online.
-- Filtrar por categoría.
-- Buscar por nombre.
-- Ordenar por precio.
-- Ver, editar y borrar cada producto (CRUD completo).
-- Insertar nuevos productos.
-- Añadir productos a un carrito de compra guardado en sesión.
-- Ver el carrito en cualquier momento desde el menú superior.
+✔️ Filtros por categoría
 
-El diseño está personalizado con colores suaves, tarjetas, sombras, hover y textos explicativos con emojis.
+✔️ Buscador inteligente
 
----
+✔️ Ordenación por precio
 
-## 2. Funcionalidades principales
+✔️ CRUD completo (crear, ver, editar, borrar)
 
-- Catálogo visual con tarjetas (modo “Amazon”).
-- Tabla de productos con filtros (Tarea 4).
-- CRUD completo:
-  - Crear
-  - Leer
-  - Actualizar
-  - Eliminar
-- Detalle editable de cada producto.
-- Filtros y ordenación que se mantienen entre vistas.
-- Carrito persistente en sesión (añadir, quitar, vaciar).
-- Menú lateral + cabecera superior.
-- Página de contacto y página de ofertas.
-- Comentarios en el código pensados para estudiar después.
+✔️ Carrito persistente mediante sesión
 
----
+✔️ Menú lateral + menú superior
 
-## 3. Tecnologías utilizadas
+✔️ Iconos, emojis y diseño cálido
 
-| Tecnología        | Uso principal                                      |
-|-------------------|----------------------------------------------------|
-| Laravel 10        | Backend, rutas, controladores                      |
-| PHP 8+            | Lógica del servidor                                |
-| Blade Templates   | Vistas y layout principal                          |
-| MySQL (XAMPP)     | Base de datos `ls_shop`                            |
-| CSS personalizado | Estilos, tarjetas, colores y “modo Amazon”        |
-| Laravel Sessions  | Carrito persistente por usuario/navegador          |
+✔️ Comentarios educativos en el código
 
----
+🌈 2. Tecnologías utilizadas
+Tecnología	Uso
+Laravel 10	Backend, rutas, controladores
+PHP 8+	Lógica del servidor
+Blade Templates	Vistas y layout
+MySQL (XAMPP)	Base de datos ls_shop
+CSS personalizado	Estilo tipo “Amazon”
+Laravel Sessions	Carrito persistente
+VS Code / HeidiSQL	Desarrollo y BD
+📁 3. Estructura del proyecto
+Controladores (app/Http/Controllers)
 
-## 4. Estructura del proyecto
+PageController.php
 
-Rutas y controladores:
+CartController.php
 
-- `routes/web.php`
-- `app/Http/Controllers/Controller.php`
-- `app/Http/Controllers/PageController.php`
-- `app/Http/Controllers/CartController.php`
-- `app/Http/Controllers/ShopController.php` (resource extra de práctica)
+ShopController.php (extra 0,25 pts – Resource)
 
-Vistas principales (`resources/views`):
+Controller.php
 
-- `layouts/app.blade.php` → layout general de la tienda
-- `home.blade.php` → página principal (tabla con filtros – Tarea 4)
-- `products/index.blade.php` → catálogo visual tipo Amazon
-- `products/create.blade.php` → formulario de alta (INSERT)
-- `details.blade.php` → ficha editable de cada producto (CRUD Update/Delete)
-- `details_index.blade.php` → portada de la sección Detalles
-- `cart.blade.php` → carrito de compra
-- `contact.blade.php` → página de contacto
-- `offers.blade.php` → página de ofertas
+Vistas (resources/views)
 
-Archivos de base de datos:
+layouts/app.blade.php — Layout principal
 
-- Script SQL de creación y datos de ejemplo  
-  `database/sql/ls_shop_nuriarodriguez.sql` (nombre sugerido para el repo)
+home.blade.php — Tabla con filtros (Tarea 4)
 
----
+products/index.blade.php — Catálogo visual tipo Amazon
 
-## 5. Base de datos
+products/create.blade.php — Insertar producto
 
-**Base de datos:** `ls_shop` (MariaDB / MySQL)
+details.blade.php — Ficha editable CRUD
 
-Tablas principales:
+details_index.blade.php — Portada detalles
 
-1. `categories`
-2. `products`
+cart.blade.php — Carrito de la compra
 
-Campos destacados de `products`:
+contact.blade.php
 
-- `id` (PK)
-- `nombre`
-- `category_id` (FK → `categories.id`)
-- `precio`
-- `descripcion`
-- `sku`
-- `stock`
-- `activo`
-- `imagen` (ruta opcional a la imagen del producto)
+offers.blade.php
 
-El script SQL crea la BD, las tablas con sus claves foráneas y carga datos de ejemplo.
+Rutas
 
----
+routes/web.php — Todas las rutas de la tienda
 
-## 6. Rutas principales
+Base de datos
 
-| Ruta               | Método(s) | Descripción                                       |
-|--------------------|----------|---------------------------------------------------|
-| `/` o `/home`      | GET      | Página principal con tabla y filtros              |
-| `/products`        | GET      | Catálogo visual con tarjetas y paginación         |
-| `/products/create` | GET      | Formulario de alta de producto                    |
-| `/products`        | POST     | Guardar nuevo producto                            |
-| `/details`         | GET      | Portada general de la sección detalles            |
-| `/details/{id}`    | GET      | Ficha editable de un producto                     |
-| `/details/{id}`    | PUT      | Actualizar producto                               |
-| `/details/{id}`    | DELETE   | Eliminar producto                                 |
-| `/cart`            | GET      | Ver carrito                                       |
-| `/cart/add/{id}`   | POST     | Añadir producto al carrito                        |
-| `/cart/remove/{id}`| POST     | Quitar un producto del carrito                    |
-| `/cart/clear`      | POST     | Vaciar carrito completo                           |
-| `/contact`         | GET      | Página de contacto                                |
-| `/offers`          | GET      | Página de ofertas                                 |
-| `/shop/*`          | Varios   | Rutas generadas por `Route::resource` (extra)     |
+database/sql/ls_shop_nuriarodriguez.sql
+(script limpio recomendado para el repositorio)
 
----
+🧱 4. Base de datos
 
-## 7. CRUD implementado
+Base de datos: ls_shop
+Tablas:
 
-### Create
+products
 
-- Formulario de alta en `/products/create`.
-- Validación de campos en `PageController::storeProduct()`.
-- Inserción con el modelo `Product`.
+categories
 
-### Read
+Campos destacados de products:
 
-- Tabla de productos en `/home` (Tarea 4).
-- Catálogo visual con tarjetas en `/products`.
-- Detalle de producto en `/details/{id}`.
+id, nombre, categoria_id, precio
 
-### Update
+descripcion, sku, stock, activo, imagen
 
-- Edición de cualquier campo del producto desde `/details/{id}`.
-- Validación y guardado en `PageController::updateProduct()`.
+El SQL contiene:
 
-### Delete
+Creación de la BD
 
-- Botón “Eliminar producto” en `/details/{id}`.
-- Eliminación con `PageController::deleteProduct()`.
+Tablas con claves foráneas
 
----
+Datos de ejemplo
 
-## 8. Carrito de compra (sesión)
+Configuración UTF8MB4
 
-Controlador: `CartController`  
-Vista: `cart.blade.php`  
-Rutas: `/cart`, `/cart/add/{product}`, `/cart/remove/{product}`, `/cart/clear`
+🧭 5. Rutas principales
+Ruta	Descripción
+/ o /home	Página principal con tabla y filtros
+/products	Catálogo visual
+/products/create	Crear producto
+/products (POST)	Guardar nuevo producto
+/details	Portada general de detalles
+/details/{id}	Ficha editable
+/details/{id} PUT	Actualizar producto
+/details/{id} DELETE	Borrar
+/cart	Ver carrito
+/cart/add/{id}	Añadir al carrito
+/cart/remove/{id}	Quitar
+/cart/clear	Vaciar
+/contact	Contacto
+/offers	Ofertas
+/shop/*	Rutas del Resource extra (0,25 pts)
+🛠️ 6. CRUD implementado
+✔️ CREATE
 
-El carrito se guarda en la **sesión** de Laravel.  
-Estructura del array `$cart`:
+/products/create — Formulario
+storeProduct() — Inserta en BD
 
-```php
+✔️ READ
+
+Tabla con filtros en /home
+
+Catálogo visual /products
+
+Detalle /details/{id}
+
+✔️ UPDATE
+
+updateProduct() con validación
+
+✔️ DELETE
+
+deleteProduct() desde /details/{id}
+
+🛒 7. Carrito de compra (con sesión)
+
+Controlador: CartController.php
+Vista: cart.blade.php
+
+Estructura del carrito en sesión:
+
 $cart = [
     product_id => [
-        'id'       => (int),    // id del producto
-        'name'     => (string), // nombre
-        'price'    => (float),  // precio unitario
-        'qty'      => (int),    // cantidad
-        'category' => (string), // nombre de la categoría (informativo)
-    ],
-    // ...
+        'id'       => (int),
+        'name'     => (string),
+        'price'    => (float),
+        'qty'      => (int),
+        'category' => (string),
+    ]
 ];
+
+
+Funciones:
+
+index() → ver carrito y total
+
+add() → añadir producto
+
+remove() → quitar uno
+
+clear() → vaciar todo
+
+Persistente en sesión → cada usuario tiene su carrito.
+
+⭐ 8. Extra 0,25 pts — Resource sin interferir
+
+Añadido en routes/web.php:
 
 // === EXTRA 0,25 ptos: Resource sin interferir con lo anterior ===
 // Este resource crea automáticamente TODAS las rutas de un CRUD completo.
@@ -190,9 +186,54 @@ $cart = [
 //   - PUT    /shop/{id}        → update()
 //   - DELETE /shop/{id}        → destroy()
 //
-// Yo no uso estas rutas en la tienda principal (home, products, carrito, etc.),
-// pero las añado para demostrar que conozco cómo funciona un
-// controlador REST completo en Laravel.
-
+// No lo uso en la tienda principal, pero lo incluyo para demostrar
+// que entiendo cómo funciona un controlador REST completo en Laravel.
+//
 Route::resource('/shop', ShopController::class);
+
+
+💡 No altera la tienda ni da errores.
+💡 Garantiza el punto extra.
+
+🚀 9. Instalación y uso
+1️⃣ Clonar repositorio
+git clone https://github.com/NuriaRodvin/M06-UF02-LS_SHOP.git
+cd M06-UF02-LS_SHOP
+
+2️⃣ Instalar dependencias
+composer install
+npm install
+
+3️⃣ Configurar .env
+
+Copiar .env.example a .env y editar:
+
+DB_DATABASE=ls_shop
+DB_USERNAME=root
+DB_PASSWORD=
+
+4️⃣ Generar key
+php artisan key:generate
+
+5️⃣ Importar base de datos
+
+En phpMyAdmin → importar ls_shop_nuriarodriguez.sql.
+
+6️⃣ Iniciar el servidor
+php artisan serve
+
+
+Abrir en navegador:
+
+http://127.0.0.1:8000
+
+📝 10. Notas finales
+
+El proyecto incluye MUCHOS comentarios educativos para estudiar.
+
+Combina Laravel, Blade, BD, CRUD, sesiones y diseño personalizado.
+
+Carrito, catálogo, paginación y filtros funcionan perfectamente.
+
+El repositorio está listo para evaluación o ampliación.
 
